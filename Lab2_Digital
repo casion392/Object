@@ -1,0 +1,77 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+#include <avr/power.h>
+#endif
+
+#define PIN 4
+
+const int firstbutton = 2;
+const int secondbutton = 3;
+const int lightstrip = 4;
+
+
+//5 = number of pixels
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(5, PIN, NEO_GRB + NEO_KHZ800);
+
+void setup() {
+  Serial.begin(9600);
+  // put your setup code here, to run once:
+//initialize strip
+strip.begin();
+strip.show(); //sets pixels off
+
+pinMode(firstbutton, INPUT);
+pinMode(secondbutton, INPUT);
+pinMode(lightstrip, OUTPUT);
+
+}
+
+void loop() {
+  Serial.print(digitalRead(firstbutton));
+
+  if(digitalRead(firstbutton) == LOW && digitalRead(secondbutton) == LOW){
+  for(int i = 0 ; i<5; i++){
+    strip.setPixelColor(i,0,0,0);
+    strip.show();
+  }
+  }
+
+//firstbutton action
+if(digitalRead(firstbutton) == HIGH && digitalRead(secondbutton) == LOW){
+  for(int i = 0 ; i<5; i++){
+    strip.setPixelColor(i,57,255,20);
+    strip.show();
+    delay(100);
+    strip.setPixelColor(i,57,255,20);
+    strip.show();
+  }
+  
+}
+
+//secondbutton action
+if(digitalRead(firstbutton) == LOW && digitalRead(secondbutton) == HIGH){
+  for(int i = 0 ; i<5; i++){
+    strip.setPixelColor(i,100,6,200);
+    strip.show();
+    delay(100);
+    strip.setPixelColor(i,100,6,200);
+    strip.show();
+  }
+  
+}
+
+//both button action
+if(digitalRead(firstbutton) == HIGH && digitalRead(secondbutton) == HIGH){
+    for(int i = 0 ; i<5; i++){
+    strip.setPixelColor(i,255,0,0);
+    strip.show();
+    delay(100);
+    strip.setPixelColor(i,0,0,255);
+    strip.show();
+  }
+}
+
+
+
+
+}
